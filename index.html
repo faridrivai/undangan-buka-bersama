@@ -59,12 +59,14 @@
         /* Main Content Styles */
         .main-content {
             display: none;
+            position: relative; /* To make sure the content is above particles */
         }
 
         body {
             background: linear-gradient(45deg, #0a0a2e, #1a1a3a);
             color: white;
             min-height: 100vh;
+            position: relative; /* Ensure the particles are below the content */
         }
 
         .container {
@@ -123,6 +125,16 @@
             margin-bottom: 15px;
         }
 
+        /* Button Container untuk Menyusun Tombol di Tengah */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px; /* Spasi antar tombol */
+            margin-top: 20px;
+        }
+
+        /* Gaya Umum untuk Tombol */
         .rsvp-button, .btn-schedule {
             display: inline-block;
             padding: 15px 40px;
@@ -133,54 +145,23 @@
             font-weight: bold;
             margin-top: 20px;
             transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+            border: none; /* Pastikan border dihapus */
+            outline: none; /* Menghapus outline default pada elemen button */
         }
 
+        /* Gaya khusus untuk tombol saat diklik (focus) */
+        .rsvp-button:focus, .btn-schedule:focus {
+            outline: none; /* Menghapus outline jika tombol fokus */
+        }
+
+        /* Efek Hover untuk Tombol */
         .rsvp-button:hover, .btn-schedule:hover {
             transform: translateY(-5px);
             box-shadow: 0 5px 20px rgba(0, 255, 255, 0.4);
         }
 
-        .floating {
-            animation: floating 3s ease-in-out infinite;
-        }
-
-        @keyframes floating {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-20px);
-            }
-        }
-
-        .particle {
-            position: fixed;
-            background: rgba(0, 255, 255, 0.5);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-
-            h1 {
-                font-size: 1.8em;
-            }
-
-            .countdown-item {
-                min-width: 100px;
-                padding: 15px;
-            }
-
-            .countdown-value {
-                font-size: 1.5em;
-            }
-        }
-
-        /* Modal (Susunan Acara) */
+        /* Modal (Contact Person & Susunan Acara) */
         .modal {
             display: none;
             position: fixed;
@@ -208,10 +189,32 @@
             background: #112240;
             padding: 30px;
             border-radius: 10px;
-            width: 80%;
-            max-width: 700px;
+            width: 95%;
+            max-width: 500px;
             position: relative;
             text-align: center;
+            max-height: 80vh; /* Batas tinggi maksimal modal */
+            overflow-y: auto; /* Membuat konten bisa digulir vertikal */
+        }
+
+        /* Custom Scrollbar untuk Modal */
+        .modal-content::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .modal-content::-webkit-scrollbar-track {
+            background: #1a1a3a; /* Warna latar belakang scrollbar */
+            border-radius: 10px;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb {
+            background-color: #00ffff; /* Warna penggeser scrollbar */
+            border-radius: 10px;
+            border: 3px solid #1a1a3a; /* Border di sekitar penggeser */
+        }
+
+        .modal-content::-webkit-scrollbar-thumb:hover {
+            background-color: #0088ff; /* Warna penggeser saat hover */
         }
 
         .close-btn {
@@ -225,15 +228,69 @@
             cursor: pointer;
         }
 
-        .button-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
+        .contact-list {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
         }
 
+        .contact-button {
+            background-color: #25d366;
+            color: white;
+            padding: 10px 20px; /* Memberikan padding lebih agar tombol lebih besar */
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 1em;
+            margin-top: 10px; /* Memberikan jarak atas */
+            margin-bottom: 10px; /* Memberikan jarak bawah agar tidak terlalu mepet dengan tombol lain */
+            display: inline-block; /* Agar tombol berdampingan jika ada lebih dari satu */
+        }
+
+        .contact-item {
+            margin-bottom: 15px; /* Memberikan jarak antar item kontak */
+        }
+
+        .contact-button:hover {
+            background-color: #128c7e;
+        }
+
+        .close-contact {
+            background-color: #ff0000;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        /* Styling for Susunan Acara Modal Close Button */
+        .close-schedule {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #ff0000;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Particles.js container */
+        #particles-js {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Make sure particles stay in the background */
+        }
     </style>
 </head>
 <body>
+    <!-- Particles.js container -->
+    <div id="particles-js"></div>
+
     <!-- Loading Screen -->
     <div class="loading-screen">
         <div class="loading-text animate__animated animate__fadeIn">Soixantesix 2018</div>
@@ -277,84 +334,110 @@
                 <p>Mari kita berkumpul kembali untuk mengenang masa-masa indah di SMPN 66 Jakarta sambil berbuka puasa bersama!</p>
                 <br>
 
-                <!-- Button Container for Side-by-Side Buttons -->
-               <!-- Button Container for Side-by-Side Buttons -->
-<div class="button-container">
-    <button class="btn-schedule" onclick="showSchedule()">Lihat Susunan Acara</button>
-    <!-- Tombol RSVP yang mengarah ke grup WhatsApp -->
-    <a href="https://wa.me/6281234567890" class="rsvp-button" data-aos="zoom-in" target="_blank">Contac person</a>
-
-</div>
-
-                <!-- Modal Susunan Acara -->
-                <div class="modal" id="scheduleModal">
-                    <div class="modal-content">
-                        <button class="close-btn" onclick="closeSchedule()">&times;</button>
-                        <h2>Susunan Acara</h2>
-                        <table style="width: 100%; margin-top: 20px; border-collapse: collapse;">
-                            <tr>
-                                <th style="padding: 10px; border-bottom: 1px solid #64ffda;">Waktu</th>
-                                <th style="padding: 10px; border-bottom: 1px solid #64ffda;">Agenda</th>
-                            </tr>
-                            <tr>
-                                <td style="padding: 10px;">16:00 - 16:10</td>
-                                <td style="padding: 10px;">Pembukaan Acara</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 10px;">16:10 - 16:15</td>
-                                <td style="padding: 10px;">Sambutan dari ketua pelaksana</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 10px;">16:15 - 16:25</td>
-                                <td style="padding: 10px;">Sambutan dari perwakilan guru</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 10px;">16:25 - 16:30</td>
-                                <td style="padding: 10px;">Sambutan dari Korlas</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 10px;">16:30 - 16:45</td>
-                                <td style="padding: 10px;">Pemberian bingkisan kepada Guru-Guru</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 10px;">16:45 - 16:50</td>
-                                <td style="padding: 10px;">sambutan dari orang tua alm.Ragas</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 10px;">16:50 - 16:55</td>
-                                <td style="padding: 10px;">sambutan dari orang tua alm.Dimas</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 10px;">16:55 - 17:10</td>
-                                <td style="padding: 10px;">Santunan anak yatim</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 10px;">17:10 - 17:40</td>
-                                <td style="padding: 10px;">Ceramah</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 10px;">17:40 - 18:00</td>
-                                <td style="padding: 10px;">Tahlil</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 10px;">18:00 - 18:10</td>
-                                <td style="padding: 10px;">Membantalkan Puasa</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 10px;">18:10 - 18:25</td>
-                                <td style="padding: 10px;">Sholat Magrib Berjamaah</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 10px;">18:25 - Selesai</td>
-                                <td style="padding: 10px;">Menikmati sajian yang telah disediakan & pemuataran nostalgia semasa sekolah</td>
-                        </table>
-                    </div>
+                <div class="button-container">
+                    <button class="btn-schedule" onclick="showSchedule()">Lihat Susunan Acara</button>
+                    <a href="javascript:void(0);" class="rsvp-button" data-aos="zoom-in" onclick="showContactPerson()">Contact Person</a>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Modal Susunan Acara -->
+    <div class="modal" id="scheduleModal">
+        <div class="modal-content">
+            <button class="close-schedule" onclick="closeSchedule()">X</button>
+            <h2>Susunan Acara</h2>
+            <table style="width: 100%; margin-top: 20px; border-collapse: collapse;">
+                <tr>
+                    <th style="padding: 34px; border-bottom: 1px solid #64ffda;">Waktu</th>
+                    <th style="padding: 28px; border-bottom: 1px solid #64ffda;">Agenda</th>
+                </tr>
+                <tr>
+                    <td style="padding: 10px;">16:00-16:10</td>
+                    <td style="padding: 10px;">Pembukaan Acara</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px;">16:10-16:15</td>
+                    <td style="padding: 10px;">Sambutan dari ketua pelaksana</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px;">16:15-16:25</td>
+                    <td style="padding: 10px;">Sambutan dari perwakilan guru</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px;">16:25-16:30</td>
+                    <td style="padding: 10px;">Sambutan dari Korlas</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px;">16:30-16:45</td>
+                    <td style="padding: 10px;">Pemberian bingkisan kepada Guru-Guru</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px;">16:45-16:50</td>
+                    <td style="padding: 10px;">Sambutan dari orang tua alm. Ragas</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px;">16:50-16:55</td>
+                    <td style="padding: 10px;">Sambutan dari orang tua alm. Dimas</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px;">16:55-17:10</td>
+                    <td style="padding: 10px;">Santunan anak yatim</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px;">17:10-17:40</td>
+                    <td style="padding: 10px;">Ceramah</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px;">17:40-18:00</td>
+                    <td style="padding: 10px;">Tahlil</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px;">18:00-18:10</td>
+                    <td style="padding: 10px;">Membantalkan Puasa</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px;">18:10-18:25</td>
+                    <td style="padding: 10px;">Sholat Magrib Berjamaah</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px;">18:25-Selesai</td>
+                    <td style="padding: 10px;">Menikmati sajian yang telah disediakan & pemuataran nostalgia semasa sekolah</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal Contact Person -->
+    <div class="modal" id="contactModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeContact()">&times;</button>
+            <h2>Contact Person</h2>
+            <div class="contact-item">
+                <span>Diva (91)</span>
+                <a href="https://wa.me/081234567890" class="contact-button" target="_blank">Hubungi via WhatsApp</a>
+            </div>
+            <div class="contact-item">
+                <span>Eka (92)</span>
+                <a href="https://wa.me/+6289636907196" class="contact-button" target="_blank">Hubungi via WhatsApp</a>
+            </div>
+            <div class="contact-item">
+                <span>Danu (93)</span>
+                <a href="https://wa.me/+6281291102899" class="contact-button" target="_blank">Hubungi via WhatsApp</a>
+            </div>
+            <div class="contact-item">
+                <span>Rika (94)</span>
+                <a href="https://wa.me/+6282112738853" class="contact-button" target="_blank">Hubungi via WhatsApp</a>
+            </div>
+            <div class="contact-item">
+                <span>Alifah (95)</span>
+                <a href="https://wa.me/081301234567" class="contact-button" target="_blank">Hubungi via WhatsApp</a>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
     <script>
         // Loading screen
         setTimeout(() => {
@@ -363,79 +446,130 @@
             setTimeout(() => {
                 document.querySelector('.loading-screen').style.display = 'none';
                 document.querySelector('.main-content').style.display = 'block';
-                // Initialize AOS after loading screen
-                AOS.init({
-                    duration: 1000,
-                    once: true
-                });
-                // Create particles after loading screen
-                createParticles();
             }, 1000);
-        }, 2000);
+        }, 2500);
 
         // Countdown Timer
-        const countDownDate = new Date("Mar 20, 2025 16:00:00").getTime();
-
+        const eventDate = new Date('March 20, 2025 16:00:00').getTime();
         const countdown = setInterval(function() {
             const now = new Date().getTime();
-            const distance = countDownDate - now;
+            const timeLeft = eventDate - now;
 
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-            document.getElementById("days").innerHTML = days.toString().padStart(2, '0');
-            document.getElementById("hours").innerHTML = hours.toString().padStart(2, '0');
-            document.getElementById("minutes").innerHTML = minutes.toString().padStart(2, '0');
-            document.getElementById("seconds").innerHTML = seconds.toString().padStart(2, '0');
+            document.getElementById("days").innerHTML = days;
+            document.getElementById("hours").innerHTML = hours;
+            document.getElementById("minutes").innerHTML = minutes;
+            document.getElementById("seconds").innerHTML = seconds;
 
-            if (distance < 0) {
+            if (timeLeft < 0) {
                 clearInterval(countdown);
-                document.querySelector(".countdown").innerHTML = "Acara telah dimulai!";
+                document.getElementById("days").innerHTML = "00";
+                document.getElementById("hours").innerHTML = "00";
+                document.getElementById("minutes").innerHTML = "00";
+                document.getElementById("seconds").innerHTML = "00";
             }
         }, 1000);
 
-        // Particle effect
-        function createParticles() {
-            const numberOfParticles = 50;
-            
-            for(let i = 0; i < numberOfParticles; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                
-                const size = Math.random() * 5;
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                
-                particle.style.left = `${Math.random() * 100}vw`;
-                particle.style.top = `${Math.random() * 100}vh`;
-                
-                document.body.appendChild(particle);
-                
-                animateParticle(particle);
-            }
-        }
+        // Initialize AOS
+        AOS.init();
 
-        function animateParticle(particle) {
-            const animation = particle.animate([
+        // Particles.js setup
+        particlesJS("particles-js", {
+            particles: {
+                number: {
+                    value: 80,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: "#00ffff"
+                },
+                shape: {
+                    type: "circle",
+                    stroke: {
+                        width: 0,
+                        color: "#000000"
+                    }
+                },
+                opacity: {
+                    value: 0.5,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false
+                    }
+                },
+                size: {
+                    value: 3,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 4,
+                        size_min: 0.3,
+                        sync: false
+                    }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#00ffff",
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: "none",
+                    random: false,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false,
+                    attract: {
+                        enable: false,
+                        rotateX: 600,
+                        rotateY: 1200
+                    }
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: "repulse"
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: "push"
+                    }
+                }
+            },
+            retina_detect: true
+        });
 
-                { transform: `translate(0, 0)` },
-                { transform: `translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px)` }
-            ], {
-                duration: Math.random() * 3000 + 2000,
-                iterations: Infinity
-            });
-        }
-
-        // Show Modal Susunan Acara
+        // Show modals
         function showSchedule() {
-            document.getElementById("scheduleModal").style.display = "flex";
+            document.getElementById('scheduleModal').style.display = 'flex';
         }
 
-        // Close Modal Susunan Acara
         function closeSchedule() {
-            document.getElementById("scheduleModal").style.display = "none";
+            document.getElementById('scheduleModal').style.display = 'none';
+        }
+
+        function showContactPerson() {
+            document.getElementById('contactModal').style.display = 'flex';
+        }
+
+        function closeContact() {
+            document.getElementById('contactModal').style.display = 'none';
         }
     </script>
 </body>
