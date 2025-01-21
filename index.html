@@ -12,6 +12,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         /* Loading Screen Styles */
@@ -67,19 +68,23 @@
             color: white;
             min-height: 100vh;
             position: relative; /* Ensure the particles are below the content */
+            -webkit-text-size-adjust: 100%;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+            padding-left: env(safe-area-inset-left);
+            padding-right: env(safe-area-inset-right);
         }
 
         header {
             text-align: center;
             padding: 50px 0;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+          background: rgba(255, 255, 255, 0.1);
+            -webkit-backdrop-filter: blur(10px); /* Untuk iOS */
+            backdrop-filter: blur(10px);;
             border-radius: 20px;
             margin-bottom: 40px;
         }
@@ -148,6 +153,9 @@
             text-align: center;
             border: none; /* Pastikan border dihapus */
             outline: none; /* Menghapus outline default pada elemen button */
+            -webkit-appearance: none; /* Menghilangkan styling default iOS */
+            -moz-appearance: none;
+            appearance: none;
         }
 
         /* Gaya khusus untuk tombol saat diklik (focus) */
@@ -193,8 +201,11 @@
             max-width: 500px;
             position: relative;
             text-align: center;
-            max-height: 80vh; /* Batas tinggi maksimal modal */
-            overflow-y: auto; /* Membuat konten bisa digulir vertikal */
+             -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+    max-height: 80vh;
+    /* Gunakan vh dengan perhitungan yang lebih aman */
+    max-height: calc(100vh - 60px);
         }
 
         /* Custom Scrollbar untuk Modal */
@@ -329,9 +340,10 @@
                 <p>🗓️ Rabu, 20 Maret 2025</p>
                 <p>⏰ 16:00 WIB - Selesai</p>
                 <p>📍 Aula SMPN 66 Jakarta</p>
+                <p>💰 Htm 150.000</p>
                 <p>👥 Seluruh Alumni Angkatan 2018</p>
                 <br>
-                <p>Mari kita berkumpul kembali untuk mengenang masa-masa indah di SMPN 66 Jakarta sambil berbuka puasa bersama!</p>
+                <p>Bukan ajang adu outfit,tapi ajang untuk mempererat silaturahmi biar makin solid!</p>
                 <br>
 
                 <div class="button-container">
